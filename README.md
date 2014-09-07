@@ -6,7 +6,7 @@ A simple JSON library for C++.
 Build Dependencies
 ------------------
 
-C++11 or better; scons.
+C++11 or better and [Scons](http://www.scons.org).
 
 Building
 --------
@@ -24,7 +24,12 @@ Examples
 Load an object from a string:
 
 ```
-json::Value value = json::loads("{\"hello world!\": true});
+#include <json/json.hpp>
+
+int main() {
+    json::Value value = json::loads("{\"hello world!\": true});
+    return 0;
+}
 ```
 
 Load an object from a file:
