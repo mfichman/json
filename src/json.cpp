@@ -96,7 +96,7 @@ Object parseObject(std::istream& ss) {
             throw ParseError("expected ':'");
         }
         parseWhitespace(ss);
-        Value value = loads(ss);
+        Value value = load(ss);
         object[name] = value;
         parseWhitespace(ss);
         ch = ss.get();
@@ -123,7 +123,7 @@ Value parseArray(std::istream& ss) {
             ss.get();
             return array;
         }
-        Value value = loads(ss);
+        Value value = load(ss);
         array.push_back(value);
         parseWhitespace(ss);
         ch = ss.get();
@@ -159,7 +159,7 @@ nullptr_t parseNull(std::istream& ss) {
     return nullptr;
 }
 
-Value loads(std::istream& ss) {
+Value load(std::istream& ss) {
 // Parse a JSON entity, using the inputstream ss
     parseWhitespace(ss);
     switch (ss.peek()) {
@@ -181,10 +181,10 @@ Value loads(std::istream& ss) {
 
 Value loads(std::string const& str) {
     std::stringstream ss(str);
-    return loads(ss);
+    return load(ss);
 }
 
-void dumps(Value const& value, std::ostream& ss) {
+void dump(Value const& value, std::ostream& ss) {
 // Dumps the json value into the specified output stream.
     switch (value.type()) {
     case STRING: ss << '"'+value.string()+'"'; break;
@@ -197,7 +197,7 @@ void dumps(Value const& value, std::ostream& ss) {
                 ss << ',';   
             }
             first = false;
-            dumps(item,ss);
+            dump(item,ss);
         }
         ss << ']';
         break;
@@ -211,12 +211,12 @@ void dumps(Value const& value, std::ostream& ss) {
             }
             first = false;
             ss << '"' << pair.first << "\":";
-            dumps(pair.second,ss);
+            dump(pair.second,ss);
         }
         ss << '}';
         break;
     }
-    case NULL: ss << "null"; break;
+    case NIL: ss << "null"; break;
     case BOOLEAN: ss << (value.boolean() ? "true" : "false"); break;
     default: assert(!"invalid type");
     }
@@ -225,7 +225,7 @@ void dumps(Value const& value, std::ostream& ss) {
 std::string dumps(Value const& value) {
 // Dumps a json value into a string
     std::stringstream ss;
-    dumps(value,ss);
+    dump(value,ss);
     return ss.str();
 }
 

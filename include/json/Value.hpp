@@ -29,9 +29,7 @@ namespace json {
 
 class Any;
 
-#undef NULL
-
-enum Type { STRING, NUMBER, ARRAY, OBJECT, NULL, BOOLEAN };
+enum Type { STRING, NUMBER, ARRAY, OBJECT, NIL, BOOLEAN };
 
 class Value {
 public:
@@ -114,7 +112,7 @@ template <> inline Type typeOf<String>() { return STRING; }
 template <> inline Type typeOf<Number>() { return NUMBER; }
 template <> inline Type typeOf<Array>() { return ARRAY; }
 template <> inline Type typeOf<Object>() { return OBJECT; }
-template <> inline Type typeOf<Null>() { return NULL; }
+template <> inline Type typeOf<Null>() { return NIL; }
 template <> inline Type typeOf<Boolean>() { return BOOLEAN; }
 
 

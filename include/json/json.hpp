@@ -26,9 +26,9 @@
 namespace json {
 
 
-Value loads(std::istream& in);
+Value load(std::istream& in);
 Value loads(std::string const& str);
 std::string dumps(Value const& value);
-void dumps(Value const& value, std::ostream& out);
+void dump(Value const& value, std::ostream& out);
 
 }
