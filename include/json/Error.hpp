@@ -29,13 +29,13 @@ namespace json {
 class TypeError {
 public:
     TypeError() {};
-    std::string what() { return  "type error"; }
+    std::string what() const { return  "type error"; }
 };
 
 class ParseError {
 public:
     ParseError(std::string const& msg) : message_(msg) {}
-    std::string what() { return message_; }
+    std::string what() const { return message_; }
 
 private:
     std::string message_;
