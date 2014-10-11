@@ -144,6 +144,7 @@ Value parseNumber(std::istream& ss) {
     ss >> value;
     return Value(value);
 }
+
 bool parseTrue(std::istream& ss) {
     match(ss, "true");
     return true;
@@ -154,7 +155,7 @@ bool parseFalse(std::istream& ss) {
     return false;
 }
 
-nullptr_t parseNull(std::istream& ss) {
+std::nullptr_t parseNull(std::istream& ss) {
     match(ss, "null");
     return nullptr;
 }

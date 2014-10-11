@@ -37,7 +37,7 @@ public:
     typedef std::vector<Value> Array;
     typedef std::string String;
     typedef double Number;
-    typedef nullptr_t Null;
+    typedef std::nullptr_t Null;
     typedef bool Boolean;
 
     Value();
@@ -71,7 +71,7 @@ public:
 
 private:
     template <typename T>
-    Value(T const& value) : container_(new Container<T>(value)) {} 
+    Value(T const& value);
 
     Ptr<Any> container_;
 };
@@ -80,7 +80,7 @@ typedef std::unordered_map<std::string,Value> Object;
 typedef std::vector<Value> Array;
 typedef std::string String;
 typedef double Number;
-typedef nullptr_t Null;
+typedef std::nullptr_t Null;
 typedef bool Boolean;
 
 
@@ -115,7 +115,6 @@ template <> inline Type typeOf<Object>() { return OBJECT; }
 template <> inline Type typeOf<Null>() { return NIL; }
 template <> inline Type typeOf<Boolean>() { return BOOLEAN; }
 
-
 template <typename T>
 class Container : public Any {
 public:
@@ -124,10 +123,7 @@ public:
     Container() : Any(typeOf<T>()), value_{} {};
 
     template <typename V> V const& as() const { throw TypeError(); }
-    template <> T const& as<T>() const { return value_; }
-
     template <typename V> bool is() const { return false; }
-    template <> bool is<T>() const { return true; }
 
     virtual String const& string() const { return as<String>(); }
     virtual Number number() const { return as<Number>(); }
@@ -145,6 +141,29 @@ public:
 private:
     T value_;
 };
+
+template <typename T>
+Value::Value(T const& value) : container_(new Container<T>(value)) {} 
+
+
+// Sometimes, C++ is really, really lame...
+template <> template <> inline String const& Container<String>::as<String>() const { return value_; }
+template <> template <> inline bool Container<String>::is<String>() const { return true; }
+
+template <> template <> inline Number const& Container<Number>::as<Number>() const { return value_; }
+template <> template <> inline bool Container<Number>::is<Number>() const { return true; }
+
+template <> template <> inline Array const& Container<Array>::as<Array>() const { return value_; }
+template <> template <> inline bool Container<Array>::is<Array>() const { return true; }
+
+template <> template <> inline Object const& Container<Object>::as<Object>() const { return value_; }
+template <> template <> inline bool Container<Object>::is<Object>() const { return true; }
+
+template <> template <> inline Boolean const& Container<Boolean>::as<Boolean>() const { return value_; }
+template <> template <> inline bool Container<Boolean>::is<Boolean>() const { return true; }
+
+template <> template <> inline Null const& Container<Null>::as<Null>() const { return value_; }
+template <> template <> inline bool Container<Null>::is<Null>() const { return true; }
 
 
 

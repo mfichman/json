@@ -28,6 +28,7 @@
 #include <memory>
 #include <cassert>
 #include <sstream>
+#include <vector>
 
 namespace json {
 
