@@ -115,6 +115,14 @@ template <> inline Type typeOf<Object>() { return OBJECT; }
 template <> inline Type typeOf<Null>() { return NIL; }
 template <> inline Type typeOf<Boolean>() { return BOOLEAN; }
 
+
+// Note: For some reason, cl.exe emits C4702 (unreachable code) when compiling
+// in release mode. Not sure why this is exactly, but the tests pass despite
+// the warning. Ignore the erroneous warning until M$ gets its act together.
+#ifdef _WIN32
+#pragma warning(disable:4702)
+#endif
+
 template <typename T>
 class Container : public Any {
 public:
@@ -164,6 +172,10 @@ template <> template <> inline bool Container<Boolean>::is<Boolean>() const { re
 
 template <> template <> inline Null const& Container<Null>::as<Null>() const { return value_; }
 template <> template <> inline bool Container<Null>::is<Null>() const { return true; }
+
+#ifdef _WIN32
+#pragma warning(disable:4702)
+#endif
 
 
 
